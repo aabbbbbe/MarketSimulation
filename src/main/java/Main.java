@@ -9,12 +9,8 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
 
-        Scanner scanner = new Scanner(System.in);
-
-        String userString = scanner.next();
-
-        log.warning(userString);
-
+    EndUser user = new EndUser();
+    Market market = new Market(user);
 
     }
 

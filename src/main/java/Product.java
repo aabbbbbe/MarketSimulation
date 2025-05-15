@@ -6,13 +6,11 @@ import lombok.extern.java.*;
 public class Product {
     private String name;
     private double price;
-    @Setter
-    private boolean isSold = false;
+    private int stock;
 
     public Product(String name, double price){
         this.name = name;
         this.price = price;
     }
-
 
 }
