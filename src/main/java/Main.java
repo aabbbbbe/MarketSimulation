@@ -1,16 +1,12 @@
+import lombok.extern.slf4j.Slf4j;
 
-import lombok.extern.java.*;
-import lombok.extern.log4j.Log4j;
-
-
-import java.util.Scanner;
-
-@Log
+@Slf4j
 public class Main {
     public static void main(String[] args) {
 
     EndUser user = new EndUser();
     Market market = new Market(user);
+    log.error("user input detected!!!!");
 
     }
 
