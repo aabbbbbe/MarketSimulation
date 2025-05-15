@@ -12,11 +12,11 @@ public class EndUser {
     //Searches for product in Market
     public void search(){}
 
-
+    //TODO
     public void userLogIn(){
         isEmployee = true;
     }
-
+    //TODO
     public void userLogOff(){
         isEmployee = false;
     }
