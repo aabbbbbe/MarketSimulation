@@ -1,4 +1,35 @@
 This is a repo for my assignment in a software architecture course.
 
+The goal is to simulate a stock market with functionality like searching, buying and adding products
+as an authorized user
 
-The goal is to simulate a stock market with functionality like searching, buying and adding products as an authorized user
+# TODO:
+
+- Main Method
+  - Create logic for menus 
+  - Create needed object
+  - Testing needs to be implemented
+- EndUser class
+  - Create needed wrapper functions
+  - Plan log in function for authorized user
+    - Employee class may be the smarter move?
+  - Testing may need to be implemented
+- Market class
+  - Create logic for market 
+    - add(), buy(), search()
+    - priceAdjust() logic
+      - Should react to market changes
+      - Maybe some randomness is appropriate
+  - Create products, so that the market isn't empty in the beginning
+  - Unit tests need to be implemented
+- Product class
+  - Implement history for last three intervals
+    - Interval being when an action was taken
+  - Testing may need to be implemented
+- Testing for the appropriate things
+
+# DONE:
+
+- Needed Dependencies are configured
+- NotAuthorizedException
+- General layout for program
