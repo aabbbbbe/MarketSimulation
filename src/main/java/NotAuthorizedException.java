@@ -1,4 +1,4 @@
-//Exception for Market.java
+//Only users with privileged access are allowed to add products
 
 
 public class NotAuthorizedException extends Exception {
