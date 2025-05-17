@@ -6,7 +6,10 @@ public class Main {
 
     EndUser user = new EndUser();
     Market market = new Market(user);
-    log.error("user input detected!!!!");
+    user.setMarket(market);
+    Menu menu = new Menu(market, user);
+
+    menu.startMenu();
 
     }
 

@@ -3,8 +3,12 @@ import lombok.*;
 public class EndUser {
 
     private boolean isEmployee = false;
-    
-    
+
+    @Setter Market market;
+
+    public EndUser(){
+    }
+
     //Buys product
     public void buy(){}
 
@@ -20,6 +24,11 @@ public class EndUser {
     public void userLogOff(){
         isEmployee = false;
     }
+
+    public void addProduct() throws NotAuthorizedException{
+        market.addProduct();
+    }
+
 
 
 }
