@@ -31,7 +31,6 @@ public class EndUser {
         isEmployee = false;
     }
 
-    @SuppressWarnings("i know what im doing")
     public void addProduct() throws NotAuthorizedException {
         if (!isEmployee) throw new NotAuthorizedException("You are not authorized! You need to log in to add products");
 
