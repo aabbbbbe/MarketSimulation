@@ -142,6 +142,11 @@ public class EndUser {
         return (inputInt < 0);
     }
 
+    public void userStatus(){
+        if (isEmployee) log.warning("You are logged in as an Employee");
+        else log.warning("You are logged in as an User");
+    }
+
     public void tooManyAttempts(){
         log.warning("Too many attempts!\nQuitting transaction...");
         for (int i = 3; i > 0; i--) {

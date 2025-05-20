@@ -13,6 +13,7 @@ public class Menu {
 
     public void startMenu(){
         while(true) {
+            user.userStatus();
             log.info("What do you want to do?\n1. Search for Product\n2. Log into an authorized account\n3. Add Product\n4. Log off an authorized account\n5. Exit\n");
             int temp = userInput.nextInt();
 
