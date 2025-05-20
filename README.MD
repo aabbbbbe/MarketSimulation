@@ -6,21 +6,20 @@ as an authorized user
 # TODO:
 
 - Main Method
-  - Create logic for menus 
+  - Create logic for menus (still needed for search and buy)
   - Create needed object
   - Testing needs to be implemented
 - EndUser class
   - Create needed wrapper functions
   - Plan log in function for authorized user
-    - Employee class may be the smarter move?
+    - Employee class may be the smarter move? (not the move)
   - Testing may need to be implemented
 - Market class
   - Create logic for market 
-    - add(), buy(), search()
+    - buy(), search()
     - priceAdjust() logic
       - Should react to market changes
       - Maybe some randomness is appropriate
-  - Create products, so that the market isn't empty in the beginning
   - Unit tests need to be implemented
 - Product class
   - Implement history for last three intervals
@@ -33,3 +32,5 @@ as an authorized user
 - Needed Dependencies are configured
 - NotAuthorizedException
 - General layout for program
+- add()
+- Create products, so that the market isn't empty in the beginning
