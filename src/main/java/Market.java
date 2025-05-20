@@ -1,46 +1,51 @@
 //Central logic unit for whole simulation. Handles Product management in all forms
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Scanner;
 
-import lombok.*;
-import lombok.extern.slf4j.Slf4j;
+import lombok.ToString;
+import lombok.extern.java.Log;
 
-@Slf4j
+@Log
+
 public class Market {
-    private HashMap<Integer, Product> products = new HashMap<>();
-    private int productID = 1001;
+    HashMap<Integer, Product> products = new HashMap<>();
+    private Integer productID = 1201;
     private EndUser user;
     Scanner userInput = new Scanner(System.in);
-    private MarketHelper marketHelper = new MarketHelper();
+
+
 
     public Market(EndUser user){
         this.user = user;
+        existingProducts();
+
     }
 
 
     //Adds product
-    public void addProduct() throws NotAuthorizedException {
+    public void addProduct(String name, double price, Integer amount, String description) {
+        products.put(productID, new Product(name, price, amount, description));
 
-        if(!user.isEmployee()) throw new NotAuthorizedException("You are not authorized! You need to log in to add products");
+        productID += 100;
+    }
 
+    public void showProduct(Integer key){
+        log.warning(products.get(key).toString());
+    }
 
-        log.info("Adding product...");
-        int tries = 0;
-        while(tries < 10) {
-            try {
-                String tempString = marketHelper.userInputName();
-                break;
-            } catch (NameNullException e) {
-                log.info("Product name cannot be empty!");
-                tries++;
-            }
-            log.info("Too many attempts!\nQuitting transaction...");
-            for (int i = 3; i > 0; i--){
-                log.info(i+"...");
-            }
-        }
+    public void existingProducts(){
+        products.put(101, new Product("Mario Kart World", 89, 20, "Crazy fun racing with all your favorite characters to a very reasonable price!"));
+        products.put(201, new Product("Augustiner Helles", 1.5, 1000, "Delicious monk adjacent beer from Bavaria "));
+        products.put(301, new Product("Hardhat", 20, 32, "Helmet to keep your head safe at the worksite"));
+        products.put(401, new Product("The C Programming Language, 2nd Edition", 64.99, 200, "For the times when you want to learn to code the good old way"));
+        products.put(501, new Product("Abacus", 19.99, 3123, "A normal abacus, we ordered way too many of them"));
+        products.put(601, new Product("Apple lightning charger", 15, 15, "Thank god for the EU"));
+        products.put(701, new Product("Windows 7 licence", 49.98, 300, "The last good version of Windows, sadly no security updates since 14.01.2020"));
+        products.put(801, new Product("Valve Orange Box", 20, 3, "A memento of a bygone era"));
+        products.put(901, new Product("Cow", 499.99, 5, "It's an actual cow. Pick up only"));
+        products.put(1001, new Product("SAAB 900", 1799.99, 1, "Pinnacle of Swedish Engineering"));
+        products.put(1101, new Product("Lenovo Thinkpad 480s", 200, 14, "It may be 7 years old, but it's still the perfect laptop"));
 
     }
 

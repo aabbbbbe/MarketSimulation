@@ -3,14 +3,13 @@ import lombok.extern.java.*;
 
 @Log
 @Getter
+@AllArgsConstructor
+@ToString
 public class Product {
     private String name;
     private double price;
-    private int stock;
+    private int amount;
+    private String description;
 
-    public Product(String name, double price){
-        this.name = name;
-        this.price = price;
-    }
 
 }

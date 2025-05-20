@@ -1,52 +1,67 @@
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.java.Log;
 
 import java.util.Scanner;
 
-@Slf4j
+@Log
 public class Menu {
-    private Market market;
     private EndUser user;
     Scanner userInput = new Scanner(System.in);
 
-    public Menu(Market market, EndUser user){
-        this.market = market;
+    public Menu(EndUser user){
         this.user = user;
     }
 
-    public void startMenu(){   while(true) {
+    public void startMenu(){
+        while(true) {
+            log.info("What do you want to do?\n1. Search for Product\n2. Log into an authorized account\n3. Add Product\n4. Log off an authorized account\n5. Exit\n");
+            int temp = userInput.nextInt();
 
-        log.info("What do you want to do?\n1. Search for Product\n2. Log into an authorized account\n3. Add Product\n4. Exit\n");
-        int temp = userInput.nextInt();
-        log.error("User chose: " + temp);
 
-        //TODO: Figure out User vs. Employee experience
-        switch (temp) {
-            case 1:
-                user.search();
-                break;
-            case 2:
-                user.userLogIn();
-                break;
-            case 3:
-                try{
-                    user.addProduct();
-                } catch (NotAuthorizedException e) {
-                    log.info(e.getMessage());
-                }
-                break;
-            case 4:
-                log.info("Exiting...");
-                for (int i = 3; i > 0; i--) {
-                    log.info(i + "...");
+
+            //TODO: Figure out User vs. Employee experience
+            switch (temp) {
+                case 1:
+                    log.warning("User chose 1\nsearching...");
+                    user.search();
+                    break;
+                case 2:
+                    log.warning("User chose 2\nLogging in...");
                     try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        log.info("I got interrupted");
+                        user.userLogIn();
+                    } catch (NotAuthorizedException e) {
+                        log.warning(e.getMessage());
                     }
-                }
-                return;
+                    break;
+                case 3:
+                    log.warning("User chose 3\nAdding product...");
+                    try{
+                        user.addProduct();
+                    } catch (NotAuthorizedException e) {
+                        log.warning(e.getMessage());
+                    }
+                    break;
+                case 4:
+                    log.warning("User chose 4\nLogging off...");
+                    try {
+                        user.userLogOff();
+                    } catch (NotAuthorizedException e) {
+                        log.warning(e.getMessage());
+                    }
+                    break;
+                case 5:
+                    log.warning("User chose 5\nExiting...");
+                    for (int i = 3; i > 0; i--) {
+                        log.warning(i + "...");
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            log.warning("I got interrupted");
+                        }
+                    }
+                    log.warning("Thank you and goodbye!");
+                    return;
+            }
         }
-    }
 
     }
 }
