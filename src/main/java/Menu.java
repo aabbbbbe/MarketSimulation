@@ -15,15 +15,15 @@ public class Menu {
         while(true) {
             user.userStatus();
             log.info("What do you want to do?\n1. Search for Product\n2. Log into an authorized account\n3. Add Product\n4. Log off an authorized account\n5. Exit\n");
-            int temp = userInput.nextInt();
+            int temp = Integer.parseInt(userInput.nextLine());
 
 
 
             //TODO: Figure out User vs. Employee experience
             switch (temp) {
                 case 1:
-                    log.warning("User chose 1\nsearching...");
-                    user.search();
+                    log.warning("User chose 1\nSearching...");
+                    searchMenu();
                     break;
                 case 2:
                     log.warning("User chose 2\nLogging in...");
@@ -51,18 +51,33 @@ public class Menu {
                     break;
                 case 5:
                     log.warning("User chose 5\nExiting...");
-                    for (int i = 3; i > 0; i--) {
-                        log.warning(i + "...");
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                            log.warning("I got interrupted");
-                        }
-                    }
+                    countdown();
                     log.warning("Thank you and goodbye!");
                     return;
+                default:
+                    log.warning("Not a valid option!");
+                    break;
             }
         }
+    }
+
+    public void searchMenu(){
+        user.search();
+
 
     }
+
+
+    private static void countdown() {
+        for (int i = 3; i > 0; i--) {
+            log.warning(i + "...");
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                log.warning("I got interrupted");
+            }
+        }
+    }
+
+
 }

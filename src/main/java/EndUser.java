@@ -1,6 +1,7 @@
 import lombok.*;
 import lombok.extern.java.Log;
 
+import java.util.LinkedList;
 import java.util.Scanner;
 
 
@@ -9,6 +10,7 @@ import java.util.Scanner;
 public class EndUser {
     private boolean isEmployee = false;
     @Setter Market market;
+    LinkedList<Integer> foundProductIDs;
     Scanner userInput = new Scanner(System.in);
 
 
@@ -17,7 +19,44 @@ public class EndUser {
 
     //Searches for product in Market
     public void search(){
-        market.showProduct(userInput.nextInt());
+        int tries = 0;
+
+
+        String searchTerm = "";
+        while(true) {
+            try {
+                log.info("Input search: ");
+                searchTerm = userInputString();
+                break;
+            } catch (StringNullException e) {
+                log.warning("Search " + e.getMessage());
+                tries++;
+            }
+            if (tries == 10) {
+                tooManyAttempts();
+                return;
+            }
+        }
+        market.searchProducts(searchTerm);
+
+        if (!searchIsSuccessful()) {
+            log.warning("Your query was not successful!\nDo you want to try again?\n[Y/N]");
+            String temp = userInput.nextLine();
+            switch (temp.charAt(0)) {
+                case 'y':
+                    search();
+                    break;
+                case 'n':
+                    log.warning("Returning to main menu...");
+                    break;
+            }
+        }
+        foundProductIDs = market.getFoundProductIDs();
+
+        for (Integer foundProductID : foundProductIDs) {
+            if (foundProductID == null) continue;
+            presentProduct(market.getProduct(foundProductID));
+        }
     }
 
     //TODO
@@ -27,13 +66,12 @@ public class EndUser {
     }
     //TODO
     public void userLogOff() throws NotAuthorizedException{
-        if(!isEmployee) throw new NotAuthorizedException("You need to be authorized to log in!");
+        if(!isEmployee) throw new NotAuthorizedException("You need to be logged in to log off!");
         isEmployee = false;
     }
 
     public void addProduct() throws NotAuthorizedException {
         if (!isEmployee) throw new NotAuthorizedException("You are not authorized! You need to log in to add products");
-
 
         String name, description = "";
         double price;
@@ -85,7 +123,7 @@ public class EndUser {
                 return;
             }
         }
-        while (tries < 10) {
+        while (true) {
             try {
                 log.info("What is the description of the product?\n");
                 description = userInputString();
@@ -156,5 +194,14 @@ public class EndUser {
                 log.warning("I got interrupted!");
             }
         }
+    }
+
+    public void presentProduct(Product product){
+        String formattedSting = "Name: %s || Price: %.2f || Stock: %.2f\nDescription: %s";
+        log.warning(String.format(formattedSting, product.getName(), product.getPrice(), product.getPrice(), product.getDescription()));
+    }
+
+    public boolean searchIsSuccessful(){
+        return !market.foundProductIDs.isEmpty();
     }
 }
