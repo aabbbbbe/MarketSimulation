@@ -27,6 +27,8 @@ public class Market {
         log.warning("Added product " + name + " successfully");
     }
 
+
+    //TODO
     public void buyProduct(Integer key, int amount) {
 
     }
@@ -46,9 +48,14 @@ public class Market {
 
     }
 
+    //TODO: plan and implement
+    public void priceAdjust(){
+
+    }
 
     // Can be ignored. It's just random products for testing
     public void existingProducts(){
+        products.put(1, new Product("Sternburg", 0.59, 100, "Beer. For alcoholics and students alike."));
         products.put(101, new Product("Mario Kart World", 89, 20, "Video game. Crazy fun racing with all your favorite characters to a very reasonable price!"));
         products.put(201, new Product("Augustiner Helles", 1.5, 1000, "Beer. Delicious monk adjacent beer from Bavaria "));
         products.put(301, new Product("Hardhat", 20, 32, "Safety equipment. Helmet to keep your head safe at the worksite"));
@@ -66,5 +73,8 @@ public class Market {
         return products.get(productID);
     }
 
+    public boolean productExists(Integer productID){
+        return products.containsKey(productID);
+    }
 
 }

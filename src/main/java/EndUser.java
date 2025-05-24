@@ -15,7 +15,71 @@ public class EndUser {
 
 
     //Buys product
-    public void buy(){}
+    //TODO
+
+    public void buy() {
+        Integer selectedProductIdx=-1;
+        while (true) {
+            log.info("Which product do you want to buy?");
+
+            int i = 1;
+
+            for (Integer foundProductID : getFoundProductIDs()) {
+                log.info(i + ". " + getProduct(foundProductID).getName());
+                i++;
+            }
+            try {
+                selectedProductIdx = Integer.parseInt(userInput.nextLine());
+                if (!(selectedProductIdx >= 1 && selectedProductIdx <= getFoundProductIDs().size())) {
+                    log.warning("Input invalid!");
+                    log.info("Do you want to try again? [Y/N]");
+                    String tempString = userInput.nextLine().toLowerCase();
+                    switch (tempString.charAt(0)) {
+                        case 'y':
+                            break;
+                        case 'n':
+                            log.warning("Returning to main menu...");
+                            return;
+                        default:
+                            log.warning("Not a valid option!");
+                            break;
+                    }
+                }
+            } catch (NumberFormatException e) {
+                log.warning("Only numbers are allowed!");
+                continue;
+            }
+            break;
+        }
+        log.warning("Selecting product " + getProduct(getFoundProductIDs().get(selectedProductIdx-1)).getName()+"...");
+        Integer amount = -1;
+        while(true) {
+            log.info("How much do you want to buy?");
+            try{
+                amount = Integer.parseInt(userInput.nextLine());
+
+                if(market.getProduct(getFoundProductIDs().get(selectedProductIdx-1)).getAmount() < amount){
+                    log.warning("Not enough stock!");
+                    log.info("1. Buy all available stock\n2. Buy another amount\n3. Quit transaction");
+                    int ifTemp = Integer.parseInt(userInput.nextLine());
+                    switch (ifTemp){
+                        case 1:
+                            amount = market.getProduct(getFoundProductIDs().get(selectedProductIdx-1)).getAmount();
+                            break;
+                        case 2:
+                            continue;
+                        case 3:
+                            return;
+                    }
+                }
+            } catch (NumberFormatException e) {
+                log.warning("Only numbers are allowed!");
+            }
+            break;
+        }
+        log.warning("Buying "+ amount  + " of Product " + getProduct(getFoundProductIDs().get(selectedProductIdx-1)).getName());
+        market.buyProduct(getFoundProductIDs().get(selectedProductIdx-1), amount);
+    }
 
     //Searches for product in Market
     public void search(){
@@ -48,28 +112,34 @@ public class EndUser {
                     break;
                 case 'n':
                     log.warning("Returning to main menu...");
+                    return;
+                default:
+                    log.warning("Not a valid option!");
                     break;
             }
+
         }
         foundProductIDs = market.getFoundProductIDs();
-
+        int i = 1;
         for (Integer foundProductID : foundProductIDs) {
-            if (foundProductID == null) continue;
-            presentProduct(market.getProduct(foundProductID));
+            log.warning("\nProduct number " + i + ":\n" + formattedProduct(market.getProduct(foundProductID)));
+            i++;
         }
     }
 
-    //TODO
+    //TODO: Nice to have actual password and login, but not the priority
     public void userLogIn() throws NotAuthorizedException {
         if(isEmployee) throw new NotAuthorizedException("You're already authorized!");
         isEmployee = true;
     }
-    //TODO
+
     public void userLogOff() throws NotAuthorizedException{
         if(!isEmployee) throw new NotAuthorizedException("You need to be logged in to log off!");
         isEmployee = false;
     }
 
+
+    //Nice to have: Option to cancel transaction during input
     public void addProduct() throws NotAuthorizedException {
         if (!isEmployee) throw new NotAuthorizedException("You are not authorized! You need to log in to add products");
 
@@ -196,12 +266,16 @@ public class EndUser {
         }
     }
 
-    public void presentProduct(Product product){
-        String formattedSting = "Name: %s || Price: %.2f || Stock: %.2f\nDescription: %s";
-        log.warning(String.format(formattedSting, product.getName(), product.getPrice(), product.getPrice(), product.getDescription()));
+    public String formattedProduct(Product product){
+        String formattedSting = "Name: %s || Price: %.2f || Stock: %d\nDescription: %s";
+        return String.format(formattedSting, product.getName(), product.getPrice(), product.getAmount(), product.getDescription());
     }
 
     public boolean searchIsSuccessful(){
         return !market.foundProductIDs.isEmpty();
+    }
+
+    public Product getProduct(Integer productID){
+        return market.getProduct(productID);
     }
 }

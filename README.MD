@@ -7,7 +7,6 @@ as an authorized user
 
 - Main Method
   - Create logic for menus (still needed for search and buy)
-  - Create needed object
   - Testing needs to be implemented
 - EndUser class
   - Create needed wrapper functions
@@ -16,7 +15,7 @@ as an authorized user
   - Testing may need to be implemented
 - Market class
   - Create logic for market 
-    - buy(), search()
+    - buy()
     - priceAdjust() logic
       - Should react to market changes
       - Maybe some randomness is appropriate
@@ -33,4 +32,6 @@ as an authorized user
 - NotAuthorizedException
 - General layout for program
 - add()
+- search()
 - Create products, so that the market isn't empty in the beginning
+- create needed objects
