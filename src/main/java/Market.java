@@ -11,6 +11,7 @@ import lombok.extern.java.Log;
 public class Market {
     HashMap<Integer, Product> products = new HashMap<>();
     private Integer productID = 1201;
+    // TODO: Figure out better way to do this. Shared states is not so cool
     LinkedList<Integer> foundProductIDs = new LinkedList<>();
 
 
@@ -28,8 +29,6 @@ public class Market {
         log.warning("Added product " + name + " successfully");
     }
 
-
-    //TODO
     public void buyProduct(Integer key, int buyingAmount) {
         String purchasedProductName = products.get(key).getName();
         double buyingPrice = calculatePrice(products.get(key).getPrice(), buyingAmount);

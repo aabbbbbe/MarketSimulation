@@ -1,3 +1,5 @@
+// TODO: This class got out off hand. Consider refactor/new class
+
 import lombok.*;
 import lombok.extern.java.Log;
 
@@ -24,8 +26,13 @@ public class EndUser {
         }
     }
 
+    // TODO: Plan and implement
+    public void presentPurchasingHistory(){
+
+    }
+
     //Buys product
-    //TODO: If time left over, figure out a nicer way to call market functions instead of those romans like getProduct(getFoundProductIDs().get(selectedProductIdx-1))
+    //TODO: If time left over, figure out a nicer way to call market functions instead of those novels like getProduct(getFoundProductIDs().get(selectedProductIdx-1))
     public void buy() {
         int selectedProductIdx;
         while (true) {
@@ -71,8 +78,8 @@ public class EndUser {
                     log.warning("Not enough stock!\nAvailable stock of " + getProduct(getFoundProductIDs().get(selectedProductIdx-1)).getName() +
                             ": "+ market.getProduct(getFoundProductIDs().get(selectedProductIdx-1)).getAmount());
                     log.info("What do you want to do?\n1. Buy all available stock\n2. Buy another amount\n3. Quit transaction");
-                    int ifTemp = Integer.parseInt(userInput.nextLine());
-                    switch (ifTemp){
+                    int buyingAmountTemp = Integer.parseInt(userInput.nextLine());
+                    switch (buyingAmountTemp){
                         case 1:
                             amount = market.getProduct(getFoundProductIDs().get(selectedProductIdx-1)).getAmount();
                             break;
@@ -163,7 +170,7 @@ public class EndUser {
     }
 
 
-    //Nice to have: Option to cancel transaction during input
+    //TODO: Nice to have Option to cancel transaction during input
     public void addProduct() throws NotAuthorizedException {
         if (!isEmployee) throw new NotAuthorizedException("You are not authorized! You need to log in to add products");
 
@@ -184,7 +191,7 @@ public class EndUser {
                 log.warning("Name" + e.getMessage());
                 tries++;
             }
-            if (tries == 10) {
+            if (tries == 5) {
                 tooManyAttempts();
                 return;
             }
@@ -198,7 +205,7 @@ public class EndUser {
                 log.warning(e.getMessage());
                 tries++;
             }
-            if (tries == 10) {
+            if (tries == 5) {
                 tooManyAttempts();
                 return;
             }
@@ -212,7 +219,7 @@ public class EndUser {
                 log.warning(e.getMessage());
                 tries++;
             }
-            if (tries == 10) {
+            if (tries == 5) {
                 tooManyAttempts();
                 return;
             }
@@ -228,7 +235,7 @@ public class EndUser {
                 log.warning("Description" + e.getMessage());
                 tries++;
             }
-            if (tries == 10) {
+            if (tries == 5) {
                 tooManyAttempts();
                 return;
             }

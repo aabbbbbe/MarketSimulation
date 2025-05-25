@@ -23,4 +23,9 @@ public class Product {
         this.amount -= buyingAmount;
     }
 
+    // TODO: Plan and implement
+    public void addProductHistory(){
+
+    }
+
 }
