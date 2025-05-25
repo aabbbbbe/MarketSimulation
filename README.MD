@@ -10,8 +10,7 @@ as an authorized user
 - EndUser class
   - Testing may need to be implemented
 - Market class
-  - Create logic for market 
-    - buy()
+  - Create logic for market
     - priceAdjust() logic
       - Should react to market changes
       - Maybe some randomness is appropriate
@@ -35,3 +34,4 @@ as an authorized user
 - Create needed wrapper functions
 - Plan log in function for authorized user 
   -  Employee class may be the smarter move? (not the move) (Scrapped)
+- buy()
