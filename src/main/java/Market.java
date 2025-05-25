@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.extern.java.Log;
 
 @Log
+@Setter
 @Getter
 public class Market {
     HashMap<Integer, Product> products = new HashMap<>();

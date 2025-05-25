@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 
 @Log
+@Setter
 @Getter
 public class EndUser {
     private boolean isEmployee = false;
@@ -74,8 +75,8 @@ public class EndUser {
             try{
                 amount = Integer.parseInt(userInput.nextLine());
 
-                if(market.getProduct(getFoundProductIDs().get(selectedProductIdx-1)).getAmount() < amount){
-                    log.warning("Not enough stock!\nAvailable stock of " + getProduct(getFoundProductIDs().get(selectedProductIdx-1)).getName() +
+                if(market.getProduct(getFoundProductIDs().get(selectedProductIdx-1)).getAmount() < amount || amount <= 0){
+                    log.warning("Invalid amount!\nAvailable stock of " + getProduct(getFoundProductIDs().get(selectedProductIdx-1)).getName() +
                             ": "+ market.getProduct(getFoundProductIDs().get(selectedProductIdx-1)).getAmount());
                     log.info("What do you want to do?\n1. Buy all available stock\n2. Buy another amount\n3. Quit transaction");
                     int buyingAmountTemp = Integer.parseInt(userInput.nextLine());
@@ -104,7 +105,7 @@ public class EndUser {
                 market.buyProduct(getFoundProductIDs().get(selectedProductIdx-1), amount);
                 break;
             case 'n':
-                log.warning("Returning to buy menu...");
+                log.warning("Returning to the main menu...");
                 return;
             default:
                 log.warning("Not a valid option!");

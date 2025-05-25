@@ -3,6 +3,7 @@ import lombok.extern.java.*;
 import java.util.LinkedList;
 
 @Log
+@Setter
 @Getter
 @ToString
 public class Product {
