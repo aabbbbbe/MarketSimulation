@@ -30,7 +30,18 @@ public class Market {
 
 
     //TODO
-    public void buyProduct(Integer key, int amount) {
+    public void buyProduct(Integer key, int buyingAmount) {
+        String purchasedProductName = products.get(key).getName();
+        double buyingPrice = calculatePrice(products.get(key).getPrice(), buyingAmount);
+        if(buyingAmount == products.get(key).getAmount()){
+            products.remove(key);
+            log.warning("Successfully bought all stock of " + purchasedProductName + "\nProduct " + purchasedProductName +" is not available anymore");
+            return;
+        }
+
+        products.get(key).decrementAmount(buyingAmount);
+        log.warning("Successfully bought " + buyingAmount + " of product " + purchasedProductName + "\nPrice of transaction: " + buyingPrice);
+
 
     }
 
@@ -54,9 +65,14 @@ public class Market {
 
     }
 
+
+    public double calculatePrice(double buyingPrice, int amount){
+        return  buyingPrice*amount;
+    }
+
     // Can be ignored. It's just random products for testing
     public void existingProducts(){
-        products.put(1, new Product("Sternburg", 0.59, 100, "Beer. For alcoholics and students alike."));
+        products.put(1, new Product("Sternburg Export", 0.59, 100, "Beer. For alcoholics and students alike."));
         products.put(101, new Product("Mario Kart World", 89, 20, "Video game. Crazy fun racing with all your favorite characters to a very reasonable price!"));
         products.put(201, new Product("Augustiner Helles", 1.5, 1000, "Beer. Delicious monk adjacent beer from Bavaria "));
         products.put(301, new Product("Hardhat", 20, 32, "Safety equipment. Helmet to keep your head safe at the worksite"));
@@ -73,9 +89,4 @@ public class Market {
     public Product getProduct(Integer productID){
         return products.get(productID);
     }
-
-    public boolean productExists(Integer productID){
-        return products.containsKey(productID);
-    }
-
 }

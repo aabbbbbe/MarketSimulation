@@ -77,7 +77,7 @@ public class Menu {
                     case 1:
                         log.warning("User chose 1\nGoing to buy menu...");
                         user.buy();
-                        break;
+                        return;
                     case 2:
                         log.warning("User chose 2\nSearching again...");
                         user.search();

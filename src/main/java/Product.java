@@ -19,5 +19,8 @@ public class Product {
         this.description = description;
     }
 
+    public void decrementAmount(int buyingAmount){
+        this.amount -= buyingAmount;
+    }
 
 }

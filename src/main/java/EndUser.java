@@ -25,8 +25,9 @@ public class EndUser {
     }
 
     //Buys product
+    //TODO: If time left over, figure out a nicer way to call market functions instead of those romans like getProduct(getFoundProductIDs().get(selectedProductIdx-1))
     public void buy() {
-        Integer selectedProductIdx=-1;
+        int selectedProductIdx;
         while (true) {
             log.info("Which product do you want to buy?");
 
@@ -60,15 +61,16 @@ public class EndUser {
             break;
         }
         log.warning("Selecting product " + getProduct(getFoundProductIDs().get(selectedProductIdx-1)).getName()+"...");
-        Integer amount = -1;
+        int amount = -1;
         while(true) {
             log.info("How much do you want to buy?");
             try{
                 amount = Integer.parseInt(userInput.nextLine());
 
                 if(market.getProduct(getFoundProductIDs().get(selectedProductIdx-1)).getAmount() < amount){
-                    log.warning("Not enough stock!");
-                    log.info("1. Buy all available stock\n2. Buy another amount\n3. Quit transaction");
+                    log.warning("Not enough stock!\nAvailable stock of " + getProduct(getFoundProductIDs().get(selectedProductIdx-1)).getName() +
+                            ": "+ market.getProduct(getFoundProductIDs().get(selectedProductIdx-1)).getAmount());
+                    log.info("What do you want to do?\n1. Buy all available stock\n2. Buy another amount\n3. Quit transaction");
                     int ifTemp = Integer.parseInt(userInput.nextLine());
                     switch (ifTemp){
                         case 1:
@@ -85,8 +87,22 @@ public class EndUser {
             }
             break;
         }
-        log.warning("Buying "+ amount  + " of Product " + getProduct(getFoundProductIDs().get(selectedProductIdx-1)).getName());
-        market.buyProduct(getFoundProductIDs().get(selectedProductIdx-1), amount);
+        log.warning("Buying "+ amount  + " of Product " + getProduct(getFoundProductIDs().get(selectedProductIdx-1)).getName()+"...");
+        log.info("Price of transaction is: " +
+                market.calculatePrice(getProduct(getFoundProductIDs().get(selectedProductIdx-1)).getPrice(), amount) +
+                "\nDo you want to proceed with the transaction? [Y/N]");
+        String tempString = userInput.nextLine().toLowerCase();
+        switch (tempString.charAt(0)) {
+            case 'y':
+                market.buyProduct(getFoundProductIDs().get(selectedProductIdx-1), amount);
+                break;
+            case 'n':
+                log.warning("Returning to buy menu...");
+                return;
+            default:
+                log.warning("Not a valid option!");
+                break;
+        }
     }
 
     //Searches for product in Market
@@ -94,7 +110,7 @@ public class EndUser {
         int tries = 0;
 
 
-        String searchTerm = "";
+        String searchTerm;
         while(true) {
             try {
                 log.info("Input search: ");
@@ -151,7 +167,7 @@ public class EndUser {
     public void addProduct() throws NotAuthorizedException {
         if (!isEmployee) throw new NotAuthorizedException("You are not authorized! You need to log in to add products");
 
-        String name, description = "";
+        String name, description;
         double price;
         int amount;
 
