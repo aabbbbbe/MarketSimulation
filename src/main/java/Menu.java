@@ -27,6 +27,7 @@ public class Menu {
                         break;
                     case 2:
                         log.warning("User chose 2\nShowing all available products...");
+                        user.presentAllAvailableProducts();
                         break;
                     case 3:
                         log.warning("User chose 3\nAdding product...");

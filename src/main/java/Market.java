@@ -7,10 +7,11 @@ import lombok.*;
 import lombok.extern.java.Log;
 
 @Log
+@Getter
 public class Market {
     HashMap<Integer, Product> products = new HashMap<>();
     private Integer productID = 1201;
-    @Getter LinkedList<Integer> foundProductIDs = new LinkedList<>();
+    LinkedList<Integer> foundProductIDs = new LinkedList<>();
 
 
 

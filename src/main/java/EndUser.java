@@ -14,9 +14,17 @@ public class EndUser {
     Scanner userInput = new Scanner(System.in);
 
 
-    //Buys product
-    //TODO
+    public void presentAllAvailableProducts(){
+        int j = 1;
+        for (Integer i = 0; i < market.getProductID(); i++) {
+            if(!(market.getProduct(i) == null)) {
+                log.warning("\nProduct number " + j + ":\n" + formattedProduct(market.getProduct(i)));
+                j++;
+            }
+        }
+    }
 
+    //Buys product
     public void buy() {
         Integer selectedProductIdx=-1;
         while (true) {
