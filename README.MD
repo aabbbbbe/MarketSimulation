@@ -6,12 +6,8 @@ as an authorized user
 # TODO:
 
 - Main Method
-  - Create logic for menus (still needed for search and buy)
   - Testing needs to be implemented
 - EndUser class
-  - Create needed wrapper functions
-  - Plan log in function for authorized user
-    - Employee class may be the smarter move? (not the move)
   - Testing may need to be implemented
 - Market class
   - Create logic for market 
@@ -35,3 +31,7 @@ as an authorized user
 - search()
 - Create products, so that the market isn't empty in the beginning
 - create needed objects
+- Create logic for menus (still needed for search and buy)
+- Create needed wrapper functions
+- Plan log in function for authorized user 
+  -  Employee class may be the smarter move? (not the move) (Scrapped)
