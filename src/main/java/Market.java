@@ -16,7 +16,7 @@ public class Market {
     private Integer productID = 1201;
     // TODO: Figure out better way to do this. Shared states is not so cool
     LinkedList<Integer> foundProductIDs = new LinkedList<>();
-    DateTimeFormatter formatterLocalDateTime = DateTimeFormatter.ofPattern("dd MMM, uuuu hh:m:s a");
+    DateTimeFormatter formatterLocalDateTime = DateTimeFormatter.ofPattern("dd MMM, uuuu hh:mm:ss a");
 
 
 

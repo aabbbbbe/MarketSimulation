@@ -70,4 +70,23 @@ class MarketTest {
         assertEquals(3, market.products.get(1111).getHistory().size());
     }
 
+    @Test
+    public void buyFourTimesProductTest(){
+        Product product = new Product("Test", 1, 10, "TestTestTest");
+        market.products.put(1111, product);
+        for (int i = 0; i < 3; i++){
+            market.buyProduct(1111, 1);
+        }
+
+        assertEquals(3, market.products.get(1111).getHistory().size());
+    }
+
+    @Test
+    public void buyZeroTimesProductTest(){
+        Product product = new Product("Test", 1, 10, "TestTestTest");
+        market.products.put(1111, product);
+
+        assertTrue(market.getProduct(1111).getHistory().isEmpty());
+    }
+
 }
