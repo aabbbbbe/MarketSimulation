@@ -75,15 +75,15 @@ public class Market {
         double newPrice;
         if(isStockDecreasing){
             newPrice = currentPrice * (1 + (double)amount / products.get(key).getAmount());
-            products.get(key).setPrice(newPrice);
             if (rand.nextInt(100) == 1) newPrice*=2;
             log.warning("Price of product " + products.get(key).getName() + " increased to " + newPrice);
+            products.get(key).setPrice(newPrice);
             return;
         }
         newPrice = currentPrice * (1 - (double)amount / products.get(key).getAmount());
         if (rand.nextInt(100) == 1) newPrice/=2;
-        products.get(key).setPrice(newPrice);
         log.warning("Price of product " + products.get(key).getName() + " decreased to " + newPrice);
+        products.get(key).setPrice(newPrice);
     }
 
 
