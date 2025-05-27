@@ -25,8 +25,13 @@ public class Product {
     }
 
     // TODO: Plan and implement
-    public void addProductHistory(){
-
+    public void addProductHistory(double buyingPrice, int buyingAmount, double priceOfTransaction, String timeAndDate){
+        if(history.size() < 4) {
+            history.add(new ProductHistory(buyingPrice, buyingAmount, priceOfTransaction, timeAndDate));
+            return;
+        }
+        history.pop();
+        history.add(new ProductHistory(buyingPrice, buyingAmount, priceOfTransaction, timeAndDate));
     }
 
 }

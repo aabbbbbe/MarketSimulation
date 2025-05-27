@@ -70,7 +70,7 @@ public class Menu {
 
     public void buyMenu(){
         while(true){
-            log.info("What do you want to do?\n1. Buy one of the found products\n2. Search again\n3. Return to main menu");
+            log.info("What do you want to do?\n1. Buy one of the found products\n2. Search again\n3. See product history for one of the found products\n4. Return to main menu");
             try {
                 int temp = Integer.parseInt(userInput.nextLine());
                 switch (temp) {
@@ -83,7 +83,11 @@ public class Menu {
                         user.search();
                         break;
                     case 3:
-                        log.warning("User chose 3\nReturning to main menu");
+                        log.warning("User chose 3\nGoing to history menu...");
+                        user.presentPurchasingHistory();
+                        break;
+                    case 4:
+                        log.warning("User chose 4\nReturning to main menu");
                         return;
                     default:
                         log.warning("Not a valid option!");

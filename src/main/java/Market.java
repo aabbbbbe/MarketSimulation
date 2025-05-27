@@ -1,5 +1,7 @@
 //Central logic unit for whole simulation. Handles Product management in all forms
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -14,6 +16,7 @@ public class Market {
     private Integer productID = 1201;
     // TODO: Figure out better way to do this. Shared states is not so cool
     LinkedList<Integer> foundProductIDs = new LinkedList<>();
+    DateTimeFormatter formatterLocalDateTime = DateTimeFormatter.ofPattern("dd MMM, uuuu hh:m:s a");
 
 
 
@@ -31,18 +34,22 @@ public class Market {
     }
 
     public void buyProduct(Integer key, int buyingAmount) {
+        LocalDateTime localDateTime = LocalDateTime.now();
+        String formattedLocalDateTime = localDateTime.format(formatterLocalDateTime);
         String purchasedProductName = products.get(key).getName();
-        double buyingPrice = calculatePrice(products.get(key).getPrice(), buyingAmount);
+        double buyingPrice = products.get(key).getPrice();
+        double priceOfTransaction = calculatePrice(products.get(key).getPrice(), buyingAmount);
+
+
         if(buyingAmount == products.get(key).getAmount()){
             products.remove(key);
             log.warning("Successfully bought all stock of " + purchasedProductName + "\nProduct " + purchasedProductName +" is not available anymore");
             return;
         }
-
         products.get(key).decrementAmount(buyingAmount);
-        log.warning("Successfully bought " + buyingAmount + " of product " + purchasedProductName + "\nPrice of transaction: " + buyingPrice);
-
-
+        products.get(key).addProductHistory(buyingPrice, buyingAmount, priceOfTransaction, formattedLocalDateTime);
+        priceAdjust(key, false);
+        log.warning("Successfully bought " + buyingAmount + " of product " + purchasedProductName + "\nPrice of transaction: " + priceOfTransaction);
     }
 
     public void searchProducts(String searchTerm) {
@@ -61,7 +68,7 @@ public class Market {
     }
 
     //TODO: plan and implement
-    public void priceAdjust(){
+    public void priceAdjust(Integer key, boolean bought){
 
     }
 
@@ -89,4 +96,5 @@ public class Market {
     public Product getProduct(Integer productID){
         return products.get(productID);
     }
+
 }

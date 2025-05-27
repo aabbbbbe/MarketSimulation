@@ -8,7 +8,8 @@ as an authorized user
 - Main Method
   - Testing needs to be implemented
 - EndUser class
-  - Testing may need to be implemented
+    - Testing may need to be implemented
+    - employee increaseStock()
 - Market class
   - Create logic for market
     - priceAdjust() logic
@@ -16,8 +17,6 @@ as an authorized user
       - Maybe some randomness is appropriate
   - Unit tests need to be implemented
 - Product class
-  - Implement history for last three intervals
-    - Interval being when an action was taken
   - Testing may need to be implemented
 - Testing for the appropriate things
 
@@ -35,3 +34,5 @@ as an authorized user
 - Plan log in function for authorized user 
   -  Employee class may be the smarter move? (not the move) (Scrapped)
 - buy()
+- Implement history for last three intervals
+- Interval being when an action was taken

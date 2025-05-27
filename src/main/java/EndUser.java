@@ -1,4 +1,5 @@
 // TODO: This class got out off hand. Consider refactor/new class
+// Note to self: take this as a lesson for not putting everything into one class
 
 import lombok.*;
 import lombok.extern.java.Log;
@@ -12,7 +13,7 @@ import java.util.Scanner;
 @Getter
 public class EndUser {
     private boolean isEmployee = false;
-    @Setter Market market;
+    Market market;
     LinkedList<Integer> foundProductIDs;
     Scanner userInput = new Scanner(System.in);
 
@@ -29,6 +30,44 @@ public class EndUser {
 
     // TODO: Plan and implement
     public void presentPurchasingHistory(){
+        int selectedProductIdx;
+        while (true) {
+            log.info("Which product's history do you want to see?");
+
+            int i = 1;
+            for (Integer foundProductID : getFoundProductIDs()) {
+                log.info(i + ". " + getProduct(foundProductID).getName());
+                i++;
+            }
+            try {
+                selectedProductIdx = Integer.parseInt(userInput.nextLine());
+                if (!(selectedProductIdx >= 1 && selectedProductIdx <= getFoundProductIDs().size())) {
+                    log.warning("Input invalid!");
+                    log.info("Do you want to try again? [Y/N]");
+                    String tempString = userInput.nextLine().toLowerCase();
+                    switch (tempString.charAt(0)) {
+                        case 'y':
+                            break;
+                        case 'n':
+                            log.warning("Returning to main menu...");
+                            return;
+                        default:
+                            log.warning("Not a valid option!");
+                            break;
+                    }
+                }
+            } catch (NumberFormatException e) {
+                log.warning("Only numbers are allowed!");
+                continue;
+            }
+            break;
+        }
+        log.warning("Getting product history for " + getProduct(getFoundProductIDs().get(selectedProductIdx-1)).getName()+"...");
+        if(getProduct(getFoundProductIDs().get(selectedProductIdx-1)).getHistory().isEmpty()){
+            log.warning("Product history is empty!");
+            return;
+        }
+        loopThroughFormattedProductHistory(getFoundProductIDs().get(selectedProductIdx-1));
 
     }
 
@@ -309,5 +348,15 @@ public class EndUser {
 
     public Product getProduct(Integer productID){
         return market.getProduct(productID);
+    }
+
+    //This takes the cake for the most ugly method I've ever written, but at this point I just want to get this program working
+    // TODO: fix this mess
+    public void loopThroughFormattedProductHistory(Integer productID){
+        String formatterProductHistory = "Product Name: %s\nPrice at time of purchase: %.2f\nAmount sold: %d\nPrice of Transaction: %.2f\nSold at: %s";
+        for (int i = 0; i < market.products.get(productID).getHistory().size(); i++){
+            log.warning(String.format(formatterProductHistory, market.products.get(productID).getName(), market.products.get(productID).getHistory().get(i).getPriceAtTimeOfPurchase(), market.products.get(productID).getHistory().get(i).getAmountBought(),market.products.get(productID).getHistory().get(i).getPriceOfTransaction(),
+                    market.products.get(productID).getHistory().get(i).getTimeAndDateOfPurchase()));
+        }
     }
 }

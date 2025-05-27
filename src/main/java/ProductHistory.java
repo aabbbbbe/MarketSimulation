@@ -1,8 +1,10 @@
 import lombok.*;
 
 @AllArgsConstructor
-@ToString
+@Data
 public class ProductHistory {
-    private double price;
-    private int quantity;
+    private double priceAtTimeOfPurchase;
+    private int amountBought;
+    private double priceOfTransaction;
+    private String timeAndDateOfPurchase;
 }
