@@ -68,4 +68,18 @@ class EndUserTest {
 
         assertEquals(testString, user.formattedProduct(testProduct));
     }
+
+//    @Test
+//    public void authorizedProductIncrease(){
+//        Product product = new Product("Test", 1, 10, "TestTestTest");
+//        market.products.put(1111, product);
+//        user.setEmployee(true);
+//        try {
+//            user.increaseProductStock();
+//        } catch (NotAuthorizedException e) {
+//            log.warning(e.getMessage());
+//        }
+//
+//
+//    }
 }

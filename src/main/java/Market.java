@@ -68,7 +68,7 @@ public class Market {
     }
 
     //TODO: plan and implement
-    public void priceAdjust(Integer key, boolean bought){
+    public void priceAdjust(Integer key, boolean isStockDecreasing){
 
     }
 
@@ -93,8 +93,19 @@ public class Market {
         products.put(1101, new Product("Lenovo Thinkpad T480s", 200, 14, "Laptop. It may be 7 years old, but it's still the perfect laptop"));
     }
 
-    public Product getProduct(Integer productID){
-        return products.get(productID);
+    public Product getProduct(Integer key){
+        return products.get(key);
     }
 
+    public void increaseProductStock(Integer key, int increasingBy) {
+        products.get(key).incrementAmount(increasingBy);
+        priceAdjust(key, false);
+        log.warning("Successfully increased stock of " + products.get(key).getName() + " by " + increasingBy);
+    }
+
+    public void decreaseProductStock(Integer key, int decreasingBy){
+        products.get(key).decrementAmount(decreasingBy);
+        priceAdjust(key, true);
+        log.warning("Successfully decreased stock of " + products.get(key).getName() + " by " + decreasingBy);
+    }
 }

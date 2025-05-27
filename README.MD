@@ -9,7 +9,6 @@ as an authorized user
   - Testing needs to be implemented
 - EndUser class
     - Testing may need to be implemented
-    - employee increaseStock()
 - Market class
   - Create logic for market
     - priceAdjust() logic
@@ -36,3 +35,4 @@ as an authorized user
 - buy()
 - Implement history for last three intervals
 - Interval being when an action was taken
+- employee increaseStock()

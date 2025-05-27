@@ -28,41 +28,11 @@ public class EndUser {
         }
     }
 
-    // A lot of duplicate code from buy(). Refactoring is a good idea.
     // Takes user input for which product to show product history for. Has the same logic as buy()
     public void presentPurchasingHistory(){
-        int selectedProductIdx;
-        while (true) {
-            log.info("Which product's history do you want to see?");
+        int selectedProductIdx = userInputSelectedProductIDx("Which product's history do you want to see?");
+        if(selectedProductIdx == -1) return;
 
-            int i = 1;
-            for (Integer foundProductID : getFoundProductIDs()) {
-                log.info(i + ". " + getProduct(foundProductID).getName());
-                i++;
-            }
-            try {
-                selectedProductIdx = Integer.parseInt(userInput.nextLine());
-                if (!(selectedProductIdx >= 1 && selectedProductIdx <= getFoundProductIDs().size())) {
-                    log.warning("Input invalid!");
-                    log.info("Do you want to try again? [Y/N]");
-                    String tempString = userInput.nextLine().toLowerCase();
-                    switch (tempString.charAt(0)) {
-                        case 'y':
-                            break;
-                        case 'n':
-                            log.warning("Returning to main menu...");
-                            return;
-                        default:
-                            log.warning("Not a valid option!");
-                            break;
-                    }
-                }
-            } catch (NumberFormatException e) {
-                log.warning("Only numbers are allowed!");
-                continue;
-            }
-            break;
-        }
         log.warning("Getting product history for " + getProduct(getFoundProductIDs().get(selectedProductIdx-1)).getName()+"...");
         if(getProduct(getFoundProductIDs().get(selectedProductIdx-1)).getHistory().isEmpty()){
             log.warning("Product history is empty!");
@@ -76,41 +46,11 @@ public class EndUser {
     //Checks if inputs are allowed (i.e. input != 0, not making product stock go negative etc.) and then calls the associated market methods.
     //TODO: If time left over, figure out a nicer way to call market functions instead of those novels like getProduct(getFoundProductIDs().get(selectedProductIdx-1))
     public void buy() {
-        int selectedProductIdx;
-        while (true) {
-            log.info("Which product do you want to buy?");
+        int selectedProductIdx = userInputSelectedProductIDx("Which of the found products do you want to buy?");
+        if(selectedProductIdx == -1) return;
 
-            int i = 1;
-
-            for (Integer foundProductID : getFoundProductIDs()) {
-                log.info(i + ". " + getProduct(foundProductID).getName());
-                i++;
-            }
-            try {
-                selectedProductIdx = Integer.parseInt(userInput.nextLine());
-                if (!(selectedProductIdx >= 1 && selectedProductIdx <= getFoundProductIDs().size())) {
-                    log.warning("Input invalid!");
-                    log.info("Do you want to try again? [Y/N]");
-                    String tempString = userInput.nextLine().toLowerCase();
-                    switch (tempString.charAt(0)) {
-                        case 'y':
-                            break;
-                        case 'n':
-                            log.warning("Returning to main menu...");
-                            return;
-                        default:
-                            log.warning("Not a valid option!");
-                            break;
-                    }
-                }
-            } catch (NumberFormatException e) {
-                log.warning("Only numbers are allowed!");
-                continue;
-            }
-            break;
-        }
         log.warning("Selecting product " + getProduct(getFoundProductIDs().get(selectedProductIdx-1)).getName()+"...");
-        int amount = -1;
+        int amount;
         while(true) {
             log.info("\nAvailable stock of " + getProduct(getFoundProductIDs().get(selectedProductIdx-1)).getName() +
                     ": "+ market.getProduct(getFoundProductIDs().get(selectedProductIdx-1)).getAmount()+"\nInput amount: ");
@@ -257,7 +197,7 @@ public class EndUser {
         }
         while (true) {
             try {
-                amount = userInputAmount();
+                amount = userInputAmount("\nWhat amount of product are you adding?");
                 tries = 0;
                 break;
             } catch (OutOfBoundsException e) {
@@ -289,6 +229,54 @@ public class EndUser {
         market.addProduct(name, price, amount, description);
     }
 
+    public void increaseProductStock() throws NotAuthorizedException{
+        if(!isEmployee) throw new NotAuthorizedException("You are not authorized!\nYou need to log in to increase the stock of a product!");
+
+        Integer selectedProductIdx = userInputSelectedProductIDx("Which product's stock you want to increase?");
+        if (selectedProductIdx == -1) return;
+        int amount;
+        int tries = 0;
+        while (true) {
+            try {
+                amount = userInputAmount("What amount of Product are you adding?");
+                tries = 0;
+                break;
+            } catch (OutOfBoundsException e) {
+                log.warning(e.getMessage());
+                tries++;
+            }
+            if (tries == 5) {
+                tooManyAttempts();
+                return;
+            }
+        }
+        market.increaseProductStock(market.getFoundProductIDs().get(selectedProductIdx-1), amount);
+    }
+
+    public void decreaseProductStock() throws NotAuthorizedException {
+        if(!isEmployee) throw new NotAuthorizedException("You are not authorized!\nYou need to log in to decrease the stock of a product!");
+
+        Integer selectedProductIdx = userInputSelectedProductIDx("Which product's stock you want to decrease?");
+        if (selectedProductIdx == -1) return;
+        int amount;
+        int tries = 0;
+        while (true) {
+            try {
+                amount = userInputAmount("By how much do you want to decrease the stock of the product??");
+                tries = 0;
+                break;
+            } catch (OutOfBoundsException e) {
+                log.warning(e.getMessage());
+                tries++;
+            }
+            if (tries == 5) {
+                tooManyAttempts();
+                return;
+            }
+        }
+        market.decreaseProductStock(market.getFoundProductIDs().get(selectedProductIdx-1), amount);
+    }
+
     //userInput<x> are utility methods. Not the most useful ones or most used ones.
     public String userInputString() throws StringNullException {
         String userString = userInput.nextLine();
@@ -296,6 +284,43 @@ public class EndUser {
         if(userString.isEmpty()) throw new StringNullException(" cannot be empty!");
 
         return userString;
+    }
+
+    // Streamlined function for search menu. User can select between the found products
+    public Integer userInputSelectedProductIDx(String searchTerm){
+        int selectedProductIdx;
+        while (true) {
+            log.info(searchTerm);
+
+            int i = 1;
+            for (Integer foundProductID : getFoundProductIDs()) {
+                log.info(i + ". " + getProduct(foundProductID).getName());
+                i++;
+            }
+            try {
+                selectedProductIdx = Integer.parseInt(userInput.nextLine());
+                if (!(selectedProductIdx >= 1 && selectedProductIdx <= getFoundProductIDs().size())) {
+                    log.warning("Input invalid!");
+                    log.info("Do you want to try again? [Y/N]");
+                    String tempString = userInput.nextLine().toLowerCase();
+                    switch (tempString.charAt(0)) {
+                        case 'y':
+                            break;
+                        case 'n':
+                            log.warning("Returning to main menu...");
+                            return -1;
+                        default:
+                            log.warning("Not a valid option!");
+                            break;
+                    }
+                }
+            } catch (NumberFormatException e) {
+                log.warning("Only numbers are allowed!");
+                continue;
+            }
+            break;
+        }
+        return selectedProductIdx;
     }
 
     public double userInputPrice() throws OutOfBoundsException {
@@ -308,8 +333,8 @@ public class EndUser {
         return tempDouble;
     }
 
-    public int userInputAmount() throws OutOfBoundsException {
-        log.info("What amount of product are you adding?\n");
+    public int userInputAmount(String msg) throws OutOfBoundsException {
+        log.info(msg);
         int amount = Integer.parseInt(userInput.nextLine());
 
         if(isIntOutOfBounds(amount)) throw new OutOfBoundsException("Amount cannot be negative!");
@@ -359,13 +384,14 @@ public class EndUser {
         return market.getProduct(productID);
     }
 
-    //This takes the cake for the most ugly method I've ever written, but at this point I just want to get this program working
+    //This takes the cake for the most ugly method I've ever written for this program, but at this point I just want to get this program working
     // TODO: fix this mess
     public void loopThroughFormattedProductHistory(Integer productID){
-        String formatterProductHistory = "Product Name: %s\nPrice at time of purchase: %.2f\nAmount sold: %d\nPrice of Transaction: %.2f\nSold at: %s";
+        String formatterProductHistory = "Product Name: %s\nPrice at time transaction: %.2f\nNet Amount: %d\nPrice of Transaction: %.2f\nTime of Transaction: %s";
         for (int i = 0; i < market.products.get(productID).getHistory().size(); i++){
             log.warning("\n"+String.format(formatterProductHistory, market.products.get(productID).getName(), market.products.get(productID).getHistory().get(i).getPriceAtTimeOfPurchase(), market.products.get(productID).getHistory().get(i).getAmountBought(),market.products.get(productID).getHistory().get(i).getPriceOfTransaction(),
                     market.products.get(productID).getHistory().get(i).getTimeAndDateOfPurchase()));
         }
     }
+
 }
