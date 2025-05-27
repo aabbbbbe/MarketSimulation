@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Random;
 
 import lombok.*;
 import lombok.extern.java.Log;
@@ -17,6 +18,7 @@ public class Market {
     // TODO: Figure out better way to do this. Shared states is not so cool
     LinkedList<Integer> foundProductIDs = new LinkedList<>();
     DateTimeFormatter formatterLocalDateTime = DateTimeFormatter.ofPattern("dd MMM, uuuu hh:mm:ss a");
+    Random rand = new Random();
 
 
 
@@ -47,8 +49,8 @@ public class Market {
         }
         products.get(key).decrementAmount(buyingAmount);
         products.get(key).addProductHistory(buyingPrice, buyingAmount, priceOfTransaction, formattedLocalDateTime);
-        priceAdjust(key, false);
         log.warning("Successfully bought " + buyingAmount + " of product " + purchasedProductName + "\nPrice of transaction: " + priceOfTransaction);
+        priceAdjust(key, true, buyingAmount);
     }
 
     public void searchProducts(String searchTerm) {
@@ -67,8 +69,21 @@ public class Market {
     }
 
     //TODO: plan and implement
-    public void priceAdjust(Integer key, boolean isStockDecreasing){
-
+    public void priceAdjust(Integer key, boolean isStockDecreasing, int amount){
+        log.warning("Adjusting price of " + products.get(key).getName() + "...");
+        double currentPrice = products.get(key).getPrice();
+        double newPrice;
+        if(isStockDecreasing){
+            newPrice = currentPrice * (1 + (double)amount / products.get(key).getAmount());
+            products.get(key).setPrice(newPrice);
+            if (rand.nextInt(100) == 1) newPrice*=2;
+            log.warning("Price of product " + products.get(key).getName() + " increased to " + newPrice);
+            return;
+        }
+        newPrice = currentPrice * (1 - (double)amount / products.get(key).getAmount());
+        if (rand.nextInt(100) == 1) newPrice/=2;
+        products.get(key).setPrice(newPrice);
+        log.warning("Price of product " + products.get(key).getName() + " decreased to " + newPrice);
     }
 
 
@@ -98,8 +113,8 @@ public class Market {
 
     public void increaseProductStock(Integer key, int increasingBy) {
         products.get(key).incrementAmount(increasingBy);
-        priceAdjust(key, false);
         log.warning("Successfully increased stock of " + products.get(key).getName() + " by " + increasingBy);
+        priceAdjust(key, false, increasingBy);
     }
 
     public void decreaseProductStock(Integer key, int decreasingBy){
@@ -109,8 +124,8 @@ public class Market {
         }
 
         products.get(key).decrementAmount(decreasingBy);
-        priceAdjust(key, true);
         log.warning("Successfully decreased stock of " + products.get(key).getName() + " by " + decreasingBy);
+        priceAdjust(key, true, decreasingBy);
     }
 
     public void removeProduct(Integer key, String msg){
