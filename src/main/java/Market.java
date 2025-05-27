@@ -42,8 +42,7 @@ public class Market {
 
 
         if(buyingAmount == products.get(key).getAmount()){
-            products.remove(key);
-            log.warning("Successfully bought all stock of " + purchasedProductName + "\nProduct " + purchasedProductName +" is not available anymore");
+            removeProduct(key, "Successfully bought all stock of ");
             return;
         }
         products.get(key).decrementAmount(buyingAmount);
@@ -104,8 +103,19 @@ public class Market {
     }
 
     public void decreaseProductStock(Integer key, int decreasingBy){
+        if((products.get(key).getAmount()-decreasingBy) <= 0){
+            removeProduct(key, "Removing product ");
+            return;
+        }
+
         products.get(key).decrementAmount(decreasingBy);
         priceAdjust(key, true);
         log.warning("Successfully decreased stock of " + products.get(key).getName() + " by " + decreasingBy);
+    }
+
+    public void removeProduct(Integer key, String msg){
+        String purchasedProductName = products.get(key).getName();
+        products.remove(key);
+        log.warning(msg + " " + purchasedProductName + "\nProduct " + purchasedProductName +" is not available anymore");
     }
 }

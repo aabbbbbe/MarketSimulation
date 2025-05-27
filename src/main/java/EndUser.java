@@ -256,7 +256,7 @@ public class EndUser {
     public void decreaseProductStock() throws NotAuthorizedException {
         if(!isEmployee) throw new NotAuthorizedException("You are not authorized!\nYou need to log in to decrease the stock of a product!");
 
-        Integer selectedProductIdx = userInputSelectedProductIDx("Which product's stock you want to decrease?");
+        Integer selectedProductIdx = userInputSelectedProductIDx("Which product's stock do you want to decrease?");
         if (selectedProductIdx == -1) return;
         int amount;
         int tries = 0;
