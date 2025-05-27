@@ -28,7 +28,8 @@ public class EndUser {
         }
     }
 
-    // TODO: Plan and implement
+    // A lot of duplicate code from buy(). Refactoring is a good idea.
+    // Takes user input for which product to show product history for. Has the same logic as buy()
     public void presentPurchasingHistory(){
         int selectedProductIdx;
         while (true) {
@@ -72,6 +73,7 @@ public class EndUser {
     }
 
     //Buys product
+    //Checks if inputs are allowed (i.e. input != 0, not making product stock go negative etc.) and then calls the associated market methods.
     //TODO: If time left over, figure out a nicer way to call market functions instead of those novels like getProduct(getFoundProductIDs().get(selectedProductIdx-1))
     public void buy() {
         int selectedProductIdx;
@@ -110,10 +112,10 @@ public class EndUser {
         log.warning("Selecting product " + getProduct(getFoundProductIDs().get(selectedProductIdx-1)).getName()+"...");
         int amount = -1;
         while(true) {
-            log.info("How much do you want to buy?");
+            log.info("\nAvailable stock of " + getProduct(getFoundProductIDs().get(selectedProductIdx-1)).getName() +
+                    ": "+ market.getProduct(getFoundProductIDs().get(selectedProductIdx-1)).getAmount()+"\nInput amount: ");
             try{
                 amount = Integer.parseInt(userInput.nextLine());
-
                 if(market.getProduct(getFoundProductIDs().get(selectedProductIdx-1)).getAmount() < amount || amount <= 0){
                     log.warning("Invalid amount!\nAvailable stock of " + getProduct(getFoundProductIDs().get(selectedProductIdx-1)).getName() +
                             ": "+ market.getProduct(getFoundProductIDs().get(selectedProductIdx-1)).getAmount());
@@ -131,6 +133,7 @@ public class EndUser {
                 }
             } catch (NumberFormatException e) {
                 log.warning("Only numbers are allowed!");
+                continue;
             }
             break;
         }
@@ -167,7 +170,7 @@ public class EndUser {
                 log.warning("Search " + e.getMessage());
                 tries++;
             }
-            if (tries == 10) {
+            if (tries == 5) {
                 tooManyAttempts();
                 return;
             }
@@ -198,6 +201,7 @@ public class EndUser {
         }
     }
 
+    //Glorified setIsEmployee
     //TODO: Nice to have actual password and login, but not the priority
     public void userLogIn() throws NotAuthorizedException {
         if(isEmployee) throw new NotAuthorizedException("You're already authorized!");
@@ -209,8 +213,9 @@ public class EndUser {
         isEmployee = false;
     }
 
-
-    //TODO: Nice to have Option to cancel transaction during input
+    // Checks if user inputs are valid before calling market class method.
+    // The only actually well done piece of code in this mess, but it was the easiest one to implement
+    //TODO: Nice to have: Option to cancel transaction during input
     public void addProduct() throws NotAuthorizedException {
         if (!isEmployee) throw new NotAuthorizedException("You are not authorized! You need to log in to add products");
 
@@ -284,6 +289,7 @@ public class EndUser {
         market.addProduct(name, price, amount, description);
     }
 
+    //userInput<x> are utility methods. Not the most useful ones or most used ones.
     public String userInputString() throws StringNullException {
         String userString = userInput.nextLine();
 
@@ -320,11 +326,14 @@ public class EndUser {
         return (inputInt < 0);
     }
 
+    // User feedback
     public void userStatus(){
         if (isEmployee) log.warning("You are logged in as an Employee");
         else log.warning("You are logged in as an User");
     }
 
+    // Vanity function for that coolness factor
+    // Used before return call in methods with time out function
     public void tooManyAttempts(){
         log.warning("Too many attempts!\nQuitting transaction...");
         for (int i = 3; i > 0; i--) {
@@ -355,7 +364,7 @@ public class EndUser {
     public void loopThroughFormattedProductHistory(Integer productID){
         String formatterProductHistory = "Product Name: %s\nPrice at time of purchase: %.2f\nAmount sold: %d\nPrice of Transaction: %.2f\nSold at: %s";
         for (int i = 0; i < market.products.get(productID).getHistory().size(); i++){
-            log.warning(String.format(formatterProductHistory, market.products.get(productID).getName(), market.products.get(productID).getHistory().get(i).getPriceAtTimeOfPurchase(), market.products.get(productID).getHistory().get(i).getAmountBought(),market.products.get(productID).getHistory().get(i).getPriceOfTransaction(),
+            log.warning("\n"+String.format(formatterProductHistory, market.products.get(productID).getName(), market.products.get(productID).getHistory().get(i).getPriceAtTimeOfPurchase(), market.products.get(productID).getHistory().get(i).getAmountBought(),market.products.get(productID).getHistory().get(i).getPriceOfTransaction(),
                     market.products.get(productID).getHistory().get(i).getTimeAndDateOfPurchase()));
         }
     }
