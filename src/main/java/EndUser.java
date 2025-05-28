@@ -305,7 +305,7 @@ public class EndUser {
                     String tempString = userInput.nextLine().toLowerCase();
                     switch (tempString.charAt(0)) {
                         case 'y':
-                            break;
+                            continue;
                         case 'n':
                             log.warning("Returning to main menu...");
                             return -1;
