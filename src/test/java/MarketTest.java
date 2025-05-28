@@ -32,7 +32,7 @@ class MarketTest {
     @Test
     public void addProductTest(){
         market.addProduct("Test", 1, 1, "TestTestTest");
-        assertFalse(market.products.get(1201) == null);
+        assertNotNull(market.products.get(1201));
     }
 
     @Test
@@ -47,7 +47,7 @@ class MarketTest {
         Product product = new Product("Test", 1, 10, "TestTestTest");
         market.products.put(1111, product);
         market.buyProduct(1111, 5);
-        assertEquals(market.products.get(1111).getAmount(), 5);
+        assertEquals(5, market.products.get(1111).getAmount());
     }
 
     @Test
@@ -87,6 +87,65 @@ class MarketTest {
         market.products.put(1111, product);
 
         assertTrue(market.getProduct(1111).getHistory().isEmpty());
+    }
+
+    @Test
+    public void priceIncreaseTest(){
+        Product product = new Product("Test", 1, 10, "TestTestTest");
+
+        market.products.put(1111, product);
+        double oldPrice = market.products.get(1111).getPrice();
+
+        market.priceAdjust(1111, true, 5);
+        double newPrice = market.products.get(1111).getPrice();
+
+
+        assertTrue(oldPrice < newPrice);
+    }
+
+    @Test
+    public void priceDecreaseTest(){
+        Product product = new Product("Test", 1, 10, "TestTestTest");
+
+        market.products.put(1111, product);
+        double oldPrice = market.products.get(1111).getPrice();
+
+        market.priceAdjust(1111, false, 5);
+        double newPrice = market.products.get(1111).getPrice();
+
+
+        assertTrue(oldPrice > newPrice);
+    }
+
+    @Test
+    public void decreasePartiallyProductStockTest(){
+        Product product = new Product("Test", 1, 10, "TestTestTest");
+
+        market.products.put(1111, product);
+        market.decreaseProductStock(1111, 5);
+
+        assertEquals(5, market.products.get(1111).getAmount());
+    }
+
+    @Test
+    public void decreaseCompletelyProductStockTest(){
+        Product product = new Product("Test", 1, 10, "TestTestTest");
+
+        market.products.put(1111, product);
+        market.decreaseProductStock(1111, 10);
+
+        assertNull(market.products.get(1111));
+    }
+
+
+    @Test
+    public void increaseProductStockTest(){
+        Product product = new Product("Test", 1, 10, "TestTestTest");
+
+        market.products.put(1111, product);
+        market.increaseProductStock(1111, 5);
+
+        assertEquals(15, market.products.get(1111).getAmount());
     }
 
 }

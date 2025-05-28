@@ -20,17 +20,16 @@ public class Product {
         this.description = description;
     }
 
-    public void decrementAmount(int buyingAmount){
-        this.amount -= buyingAmount;
+    public void decrementAmount(int decrementingBy){
+        this.amount -= decrementingBy;
     }
 
     public void incrementAmount(int increasingBy){
         this.amount += increasingBy;
     }
 
-    // TODO: Plan and implement
     public void addProductHistory(double buyingPrice, int buyingAmount, double priceOfTransaction, String timeAndDate){
-        if(history.size() < 4) {
+        if(history.size() < 3) {
             history.add(new ProductHistory(buyingPrice, buyingAmount, priceOfTransaction, timeAndDate));
             return;
         }

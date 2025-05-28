@@ -69,11 +69,11 @@ public class Market {
     }
 
     //TODO: plan and implement
-    public void priceAdjust(Integer key, boolean isStockDecreasing, int amount){
+    public void priceAdjust(Integer key, boolean isProductStockDecreasing, int amount){
         log.warning("Adjusting price of " + products.get(key).getName() + "...");
         double currentPrice = products.get(key).getPrice();
         double newPrice;
-        if(isStockDecreasing){
+        if(isProductStockDecreasing){
             newPrice = currentPrice * (1 + (double)amount / products.get(key).getAmount());
             if (rand.nextInt(100) == 1) newPrice*=2;
             log.warning("Price of product " + products.get(key).getName() + " increased to " + newPrice);

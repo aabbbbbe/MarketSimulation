@@ -5,9 +5,7 @@ public class Main {
     Market market = new Market();
     user.setMarket(market);
     Menu menu = new Menu(user);
-
     menu.startMenu();
-
     }
 
 }
