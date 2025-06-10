@@ -23,24 +23,17 @@ It will probably not be updated again, maybe I will implement a GUI and/or fix t
 
 # Lessons learned:
 
-- Think about testing from the start
+- Think about testability from the start
 - Avoiding creating too big classes
   - EndUser got way too big in developement. Menus, input validation and user input should've been separated
-  - This made testing for EndUser too difficult as well
+    - This made testing for EndUser too difficult as well
 - Use kanban boards instead of README.MD as a to do list
 
 
 # TODO:
 
-- Main Method
-  - Testing needs to be implemented
-- EndUser class
-    - Testing may need to be implemented
-- Market class
-  - Unit tests need to be implemented
-- Product class
-  - Testing may need to be implemented
-- Testing for the appropriate things
+- Implement GUI
+- Split up EndUser class
 
 # DONE:
 
@@ -63,3 +56,12 @@ It will probably not be updated again, maybe I will implement a GUI and/or fix t
 - priceAdjust() logic
   - Should react to market changes
   - Maybe some randomness is appropriate
+- Main Method
+  - Testing needs to be implemented
+- EndUser class
+    - Testing may need to be implemented
+- Market class
+  - Unit tests need to be implemented
+- Product class
+  - Testing may need to be implemented
+- Testing for the appropriate things
